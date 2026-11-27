@@ -28,9 +28,10 @@ try:
     #Variavel pra guardar DF valido & invalido
     df_multas_valido = df_multas_sujas[~tratamento]
     df_multas_invalido = df_multas_sujas[tratamento]
-    logging.info("Etapa: Filtrando colunas concluida")
+    logging.info("Etapa: Filtrando Colunas Concluída")
 except Exception as error:
     logging.exception("Erro na etapa: Filtrando colunas válidas")
+    raise
 
 qtd_registros = len(df_multas_sujas)
 qtd_df_validos = len(df_multas_valido)
@@ -40,7 +41,7 @@ logging.info(f"Registros inicial: {qtd_registros}")
 logging.info(f"Registros Válidos: {qtd_df_validos}")
 logging.info(f"Registros Inválidos: {qtd_df_invalidos}")
 
-#Criando Função Etapa
+#Criando Função Organização de formatos Etapa
 def organizando_formatacao(df):
     df.columns = df.columns.str.lower().str.strip()
     colunas_formatar = ['modelo_veiculo','tipo_veiculo','status_pagamento','motivo_multa','gravidade','orgao_autuador']
@@ -48,6 +49,9 @@ def organizando_formatacao(df):
     for coluna in colunas_formatar:
         df[coluna] = df[coluna].str.lower().str.strip() 
     return df
+
+#Criando Função Definindo Tipo da coluna
+
 
 #Definindo Função Principal de Etapas
 def proxima_etapa(etapa,funcao,*args):
@@ -65,4 +69,6 @@ def proxima_etapa(etapa,funcao,*args):
 
 #Declarando Parametros para funções
 etapa_tratando_formatacao = proxima_etapa('Formatação de colunas',organizando_formatacao,df_multas_sujas)
+print(df_multas_valido.info())
+print(df_multas_valido.columns)
 
